@@ -4,6 +4,7 @@ import socketserver
 import time
 
 class web_server(http.server.SimpleHTTPRequestHandler):
+	encoding = 'utf-8'
 
 	def do_header(self):
 		self.protocol_version = 'HTTP/1.1'
@@ -21,7 +22,13 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 			self.do_header()
 			now = time.localtime()
 			current_time = time.strftime("%H:%M:%S", now)
-			self.wfile.write(current_time.encode("utf-8"))
+			self.wfile.write(current_time.encode(self.encoding))
+		elif self.path.startswith('/cmd=rev'):
+			self.do_header()
+			str = self.path.split('&str=')
+			if len(str) > 1:
+				rev_str = str[1][::-1]
+				self.wfile.write(rev_str.encode(self.encoding))				
 		else:
 			super().do_GET()
 
