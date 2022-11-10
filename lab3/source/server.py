@@ -24,8 +24,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 			lower = sum(1 for c in text if c.islower())
 			upper = sum(1 for c in text if c.isupper())
 			digit = sum(1 for c in text if c.isdigit())
-			space = sum(1 for c in text if c.isspace())
-			other = len(text) - upper - lower - digit - space
+			other = len(text) - upper - lower - digit
 			self.wfile.write(bytes("{{ \"lowercase\" : {}, \"uppercase\" : {}, \"digits\" : {}, \"special\" : {}}}".format(lower, upper, digit, other), self.encoding))
 		else:
 			super().do_GET()
