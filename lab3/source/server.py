@@ -19,6 +19,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 			str = self.path.split('&str=')
 			text = str[len(str) - 1]
 			if len(text) <= 1:
+				self.wfile.write(bytes("{{ \"lowercase\" : 0, \"uppercase\" : 0, \"digits\" : 0, \"special\" : 0}}".format(), self.encoding))
 				return 
 			lower = sum(1 for c in text if c.islower())
 			upper = sum(1 for c in text if c.isupper())
