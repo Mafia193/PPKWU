@@ -12,9 +12,31 @@ class web_server(http.server.SimpleHTTPRequestHandler):
 		self.end_headers()
 
 	def do_GET(self):
-		print(self.path)
-		super().do_GET()
-
+		try:
+			print(self.path)
+			text = self.path.split('?')
+			print(text)
+			args = text[len(text) - 1].split('&')
+			print(args)
+			argname  = args[0].split('=')[0]
+			argname2 = args[1].split('=')[0]
+	
+			num1 = 0
+			num2 = 0
+			if argname == 'num1':
+				num1 = int(args[0].split('=')[1])
+			if argname2 == 'num2':
+				num2 = int(args[1].split('=')[1])
+			if argname == 'num2':
+				num2 = int(args[0].split('=')[1])
+			if argname2 == 'num1':
+				num1 = int(args[1].split('=')[1])
+			
+			self.do_header()
+			self.wfile.write(bytes('{"sum":%s,"sub":%s,"mul":%s,"div":%s,"mod":%s}' % (int(num1)+int(num2), int(num1)-int(num2), int(num1)*int(num2), int(int(num1)/int(num2)), int(num1)%int(num2)), self.encoding))
+		except Exception as e:
+			print(e)
+		
 # --- main ---
 
 PORT = 4080
